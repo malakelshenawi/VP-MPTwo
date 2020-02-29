@@ -1,0 +1,2 @@
+rectangle 0 0 100 100
+rectangle 150 150 250 250
