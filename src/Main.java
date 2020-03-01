@@ -1,4 +1,8 @@
 
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.RectangularShape;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -8,14 +12,16 @@ import java.util.ArrayList;
 public class Main {
 	
 public static void main(String[] args) throws FileNotFoundException{
-	ArrayList<Shapes> SS = GetShapes();
+	ArrayList<Shape> SS = GetShapes();
+	System.out.println(SS.size());
 	for(int i = 0;i<SS.size();i++) {
-		System.out.println("type " + SS.get(i).getType()+ " min_x " + SS.get(i).getLeftx() + " min_y " + SS.get(i).getBottomy() + " max_x " +SS.get(i).getRightx()+ " max_y " +SS.get(i).getTopy());
+		System.out.println(" min_x " + ((RectangularShape) SS.get(i)).getMinX() + " min_y " + ((RectangularShape) SS.get(i)).getMinY() + " max_x " +((RectangularShape) SS.get(i)).getMaxX()+ " max_y " +((RectangularShape) SS.get(i)).getMaxY());
 	}
 	
 }
-public static ArrayList<Shapes> GetShapes() throws FileNotFoundException{
+public static ArrayList<Shape> GetShapes() throws FileNotFoundException{
 	ArrayList<Shapes> S = new ArrayList<>();
+	ArrayList<Shape> W= new ArrayList<>();
 	File file = new File("./test.txt"); 
 
 	BufferedReader br = new BufferedReader(new FileReader(file)); 
@@ -23,32 +29,46 @@ public static ArrayList<Shapes> GetShapes() throws FileNotFoundException{
 	String [] input = null;
 	
 	try {
-		st = br.readLine();
+		
 		while ((st = br.readLine()) != null) {
 		//	System.out.println(st);
 		  input = st.split(" ");
-		Shapes tmp = new Shapes(input[0],Integer.parseInt(input[1]),Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
-		S.add(tmp);
+		  if(input[0].equals("rectangle")) {
+			  // Text Representation location 0 : object_name -- location 1 : minimum_x -- location 2 : minimum_y -- location 3 : maximum_x -- location 4 :maximum_y
+			  //Shape parameters X,Y,Width,Height
+		  Shape tp = new Rectangle2D.Float(Integer.parseInt(input[1]),Integer.parseInt(input[2]),(Integer.parseInt(input[3])-Integer.parseInt(input[1])),(Integer.parseInt(input[4])-Integer.parseInt(input[2])));
+		  W.add(tp);
+		  }
+		  if(input[0].equals("circle")) {
+			  Shape tp = new Ellipse2D.Float(Integer.parseInt(input[1]),Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
+			  W.add(tp); 
+		  }
+		//Shapes tmp = new Shapes(input[0],Integer.parseInt(input[1]),Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
+		//S.add(tmp);
 		}
 	} catch (IOException e) {
 		// TODO Auto-generated catch block
 		System.out.println("Invalid Input");
 		e.printStackTrace();
 	} 
-	return S;
+	return W;
 }
-public static boolean Contains(Shapes in1,Shapes in2) {
+public static boolean Contains(Shape in1,Shape in2) {
 	boolean result = false;
-	if(in1.getType().equals("rectangle") && in2.getType().equals("circle")) {
-		if(in1.getLeftx()<=in2.getLeftx() && in1.getRightx()>=in2.getRightx() && in1.getBottomy()<=in2.getBottomy() && in1.getTopy()>=in2.getBottomy()) {
-			result = true;
-		}
+//	if(in1.getType().equals("rectangle") && in2.getType().equals("circle")) {
+//		if(in1.getLeftx()<=in2.getLeftx() && in1.getRightx()>=in2.getRightx() && in1.getBottomy()<=in2.getBottomy() && in1.getTopy()>=in2.getBottomy()) {
+//			result = true;
+//		}
+		if(in1 instanceof Rectangle2D && in2 instanceof Ellipse2D) {
+			if(in1.contains(in2.getBounds2D())) {
+				result = true;
+			}
 	}
 	return result;
 }
-public static boolean left_Of(Shapes in1,Shapes in2) {
+public static boolean left_Of(Shape in1,Shape in2) {
 	boolean result = false;
-		if(in1.getRightx()<=in2.getLeftx()) {
+		if(((RectangularShape) in1).getMaxX()<=((RectangularShape) in2).getMinX() && ((RectangularShape) in1).getMaxY() == ((RectangularShape) in2).getMaxY()) {
 			result = true;
 		}
 	
