@@ -13,11 +13,21 @@ public class Main {
 	
 public static void main(String[] args) throws FileNotFoundException{
 	ArrayList<Shape> SS = GetShapes();
-	System.out.println(SS.size());
+	//System.out.println(SS.size());
+	int rect = 0;
+	int cir = 0;
 	for(int i = 0;i<SS.size();i++) {
+		if(SS.get(i) instanceof Rectangle2D) {
+			rect ++;
+		}
+		if(SS.get(i) instanceof Ellipse2D) {
+			cir ++;
+		}
 		System.out.println(" min_x " + ((RectangularShape) SS.get(i)).getMinX() + " min_y " + ((RectangularShape) SS.get(i)).getMinY() + " max_x " +((RectangularShape) SS.get(i)).getMaxX()+ " max_y " +((RectangularShape) SS.get(i)).getMaxY());
 	}
-	
+	if(rect<=2 && cir <=2) {
+		
+	}
 }
 public static ArrayList<Shape> GetShapes() throws FileNotFoundException{
 	ArrayList<Shapes> S = new ArrayList<>();
@@ -37,10 +47,12 @@ public static ArrayList<Shape> GetShapes() throws FileNotFoundException{
 			  // Text Representation location 0 : object_name -- location 1 : minimum_x -- location 2 : minimum_y -- location 3 : maximum_x -- location 4 :maximum_y
 			  //Shape parameters X,Y,Width,Height
 		  Shape tp = new Rectangle2D.Float(Integer.parseInt(input[1]),Integer.parseInt(input[2]),(Integer.parseInt(input[3])-Integer.parseInt(input[1])),(Integer.parseInt(input[4])-Integer.parseInt(input[2])));
+		//rect ++;
 		  W.add(tp);
 		  }
 		  if(input[0].equals("circle")) {
 			  Shape tp = new Ellipse2D.Float(Integer.parseInt(input[1]),Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
+		//	 cir ++;
 			  W.add(tp); 
 		  }
 		//Shapes tmp = new Shapes(input[0],Integer.parseInt(input[1]),Integer.parseInt(input[2]),Integer.parseInt(input[3]),Integer.parseInt(input[4]));
@@ -68,7 +80,7 @@ public static boolean Contains(Shape in1,Shape in2) {
 }
 public static boolean left_Of(Shape in1,Shape in2) {
 	boolean result = false;
-		if(((RectangularShape) in1).getMaxX()<=((RectangularShape) in2).getMinX() && ((RectangularShape) in1).getMaxY() == ((RectangularShape) in2).getMaxY()) {
+		if(((RectangularShape) in1).getMaxX()<=((RectangularShape) in2).getMinX() && ((RectangularShape) in1).getMinY() == ((RectangularShape) in2).getMinY() && !(in1.intersects((Rectangle2D)in2))) {
 			result = true;
 		}
 	
