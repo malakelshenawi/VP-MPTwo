@@ -23,11 +23,18 @@ public static void main(String[] args) throws FileNotFoundException{
 		if(SS.get(i) instanceof Ellipse2D) {
 			cir ++;
 		}
-		System.out.println(" min_x " + ((RectangularShape) SS.get(i)).getMinX() + " min_y " + ((RectangularShape) SS.get(i)).getMinY() + " max_x " +((RectangularShape) SS.get(i)).getMaxX()+ " max_y " +((RectangularShape) SS.get(i)).getMaxY());
+//		if(SS.get(i) instanceof Rectangle2D) {
+//			System.out.println("rectangle");
+//		}
+//		if(SS.get(i) instanceof Ellipse2D) {
+//			System.out.println("circle");
+//		}
+	//	System.out.println(Contains(SS.get(1),SS.get(2)));
+	//	System.out.println(" min_x " + ((RectangularShape) SS.get(i)).getMinX() + " min_y " + ((RectangularShape) SS.get(i)).getMinY() + " max_x " +((RectangularShape) SS.get(i)).getMaxX()+ " max_y " +((RectangularShape) SS.get(i)).getMaxY());
 	}
-	if(rect<=2 && cir <=2) {
-		
-	}
+	
+	System.out.println(isValid(SS,rect,cir));	
+	
 }
 public static ArrayList<Shape> GetShapes() throws FileNotFoundException{
 	ArrayList<Shapes> S = new ArrayList<>();
@@ -84,6 +91,48 @@ public static boolean left_Of(Shape in1,Shape in2) {
 			result = true;
 		}
 	
+	return result;
+}
+public static boolean isValid(ArrayList<Shape> SS,int rect,int cir) {
+	boolean result = false;
+	if(SS.get(0) instanceof Ellipse2D || (rect>2) || (cir>2)) {
+		result= false;
+	}
+	else {
+	if(SS.size() == 1 && SS.get(0) instanceof Rectangle2D) {
+	result =  true;
+	
+	}
+	if(SS.size()==2 && SS.get(0) instanceof Rectangle2D && SS.get(1) instanceof Rectangle2D) {
+		if(left_Of(SS.get(0),SS.get(1))) {
+			result =  true;
+		}
+		
+	}
+	if(SS.size()==2 && SS.get(0) instanceof Rectangle2D && SS.get(1) instanceof Ellipse2D) {
+		if(Contains(SS.get(0),SS.get(1))) {
+			result =  true;
+		}
+		
+	}
+	if(SS.size()==3 && SS.get(0) instanceof Rectangle2D && SS.get(1) instanceof Ellipse2D && SS.get(2) instanceof Rectangle2D) {
+		if(Contains(SS.get(0),SS.get(1)) && left_Of(SS.get(0),SS.get(2))) {
+			result =  true;
+		}
+		
+	}
+	if(SS.size()==3 && SS.get(0) instanceof Rectangle2D && SS.get(1) instanceof Rectangle2D && SS.get(2) instanceof Ellipse2D) {
+		if(Contains(SS.get(1),SS.get(2)) && left_Of(SS.get(0),SS.get(1))) {
+			result =  true;
+		}
+		
+	}
+	if(SS.size()==4 && SS.get(0) instanceof Rectangle2D && SS.get(1) instanceof Ellipse2D && SS.get(2) instanceof Rectangle2D && SS.get(3) instanceof Ellipse2D) {
+		if(Contains(SS.get(0),SS.get(1)) && left_Of(SS.get(0),SS.get(2)) && Contains(SS.get(2),SS.get(3))) {
+			result =  true;
+		}
+	}
+	}
 	return result;
 }
 
