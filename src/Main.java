@@ -1,4 +1,8 @@
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
@@ -9,6 +13,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.WindowConstants;
 public class Main {
 	
 public static void main(String[] args) throws FileNotFoundException{
@@ -32,12 +39,32 @@ public static void main(String[] args) throws FileNotFoundException{
 	//	System.out.println(Contains(SS.get(1),SS.get(2)));
 	//	System.out.println(" min_x " + ((RectangularShape) SS.get(i)).getMinX() + " min_y " + ((RectangularShape) SS.get(i)).getMinY() + " max_x " +((RectangularShape) SS.get(i)).getMaxX()+ " max_y " +((RectangularShape) SS.get(i)).getMaxY());
 	}
-	
-	System.out.println(isValid(SS,rect,cir));	
+	if(isValid(SS,rect,cir)) {
+	System.out.println("Valid");
+	JFrame frame = new JFrame();
+	 
+	// Add a component with a custom paint method
+	 
+	frame.add(new Draw(SS));
+	 
+	// Display the frame
+	 
+	int frameWidth = 300;
+	 
+	int frameHeight = 300;
+	 
+	frame.setSize(frameWidth, frameHeight);
+	 
+	frame.setVisible(true);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	else{
+		System.out.println("Invalid");
+	}
+	//paint();
 	
 }
 public static ArrayList<Shape> GetShapes() throws FileNotFoundException{
-	ArrayList<Shapes> S = new ArrayList<>();
 	ArrayList<Shape> W= new ArrayList<>();
 	File file = new File("./test.txt"); 
 
